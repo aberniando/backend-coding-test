@@ -52,10 +52,11 @@ Response definition:
 |8|driverVehicle|Y|Driver's vehicle information|
 |9|created|Y|Generated ride timestamp|
 
-## 1. Get a specific ride information
+## 2. Get a specific ride information
 - Path: /rides/{rideID}
 - HTTP Method: GET
-URL parameter definition:
+- URL parameter definition:
+
 |No.|Field|Mandatory|Remarks|Constraint|
 |---|-----|---------|-------|----------|
 |1|rideID|Y|Given ride identifier upon adding a new ride|Integer data type|
