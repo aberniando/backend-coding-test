@@ -51,3 +51,36 @@ Response definition:
 |7|driverName|Y|Driver's name|
 |8|driverVehicle|Y|Driver's vehicle information|
 |9|created|Y|Generated ride timestamp|
+
+## 1. Get a specific ride information
+- Path: /rides/{rideID}
+- HTTP Method: GET
+URL parameter definition:
+|No.|Field|Mandatory|Remarks|Constraint|
+|---|-----|---------|-------|----------|
+|1|rideID|Y|Given ride identifier upon adding a new ride|Integer data type|
+- HTTP Response:
+####
+    {
+    "rideID": 3,
+    "startLat": 45,
+    "startLong": 120,
+    "endLat": -45,
+    "endLong": -119,
+    "riderName": "Chris",
+    "driverName": "Paul",
+    "driverVehicle": "Honda Vario",
+    "created": "2021-02-27 06:29:27"
+    }
+Response definition:
+|No.|Field|Mandatory|Remarks|
+|---|---|---|---|
+|1|rideID|Y|Generated ride identifier|
+|2|startLat|Y|Latitude value of starting point|
+|3|startLong|Y|Longiture value of starting point|
+|4|endLat|Y|Latitude value of ending point|
+|5|endLong|Y|Longiture value of ending point|
+|6|riderName|Y|Rider's name|
+|7|driverName|Y|Driver's name|
+|8|driverVehicle|Y|Driver's vehicle information|
+|9|created|Y|Generated ride timestamp|
