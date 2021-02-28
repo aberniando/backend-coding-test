@@ -68,6 +68,12 @@ module.exports.insert = (req, res) => {
 }
 
 module.exports.getRideById = (req, res) => {
+    if (isNaN(req.params.id)) {
+        return res.send({
+            error_code: 'ILLEGAL_PARAMETER',
+            message: 'Ride ID must be numeric'
+        });
+    }
     db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
         if (err) {
             return res.send({
