@@ -67,7 +67,7 @@ module.exports.insert = (req, res) => {
     });
 }
 
-module.exports.getRide = (req, res) => {
+module.exports.getRideById = (req, res) => {
     db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
         if (err) {
             return res.send({

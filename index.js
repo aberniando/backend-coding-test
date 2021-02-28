@@ -29,5 +29,5 @@ app.get('/rides', (req, res) => {
 });
 
 app.get('/rides/:id', (req, res) => {
-    ridesService.getRide(req, res)
+    ridesService.getRideById(req, res)
 });
