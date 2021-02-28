@@ -68,6 +68,12 @@ module.exports.insert = (req, res) => {
 }
 
 module.exports.getRideById = (req, res) => {
+    if (isNaN(req.params.id)) {
+        return res.send({
+            error_code: 'ILLEGAL_PARAMETER',
+            message: 'Ride ID must be numeric'
+        });
+    }
     db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
         if (err) {
             return res.send({
@@ -88,7 +94,28 @@ module.exports.getRideById = (req, res) => {
 }
 
 module.exports.getRides = (req, res) => {
-    db.all('SELECT * FROM Rides', function (err, rows) {
+    let query = '';
+    const page = req.query.page;
+    const view = req.query.view;
+    if (page == null && view == null) {
+        query = 'SELECT * FROM Rides';
+    } else {
+        if (page.length < 1 || view.length < 1) {
+            return res.send({
+                error_code: 'ILLEGAL_PARAMETER',
+                message: 'Page and view param must not be empty'
+            });
+        }
+        if (isNaN(page) || isNaN(view)) {
+            return res.send({
+                error_code: 'ILLEGAL_PARAMETER',
+                message: 'Page and view param must be numeric'
+            });
+        }
+        const offset = (page - 1) * view;
+        query = 'SELECT * FROM Rides ORDER BY rideID LIMIT ' + view + ' OFFSET ' + offset;
+    }
+    db.all(query, function (err, rows) {
         if (err) {
             return res.send({
                 error_code: 'SERVER_ERROR',
