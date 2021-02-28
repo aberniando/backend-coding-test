@@ -1,8 +1,13 @@
 'use strict';
 
 const express = require('express');
+const auth = require('express-basic-auth');
 const app = express();
 const port = 8010;
+
+app.use(auth({
+    users: { 'admin': 'supersecret' }
+}))
 
 const db = require('./database');
 const ridesRoutes = require('./src/routes/ridesRoutes');
