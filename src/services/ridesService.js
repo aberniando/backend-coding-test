@@ -63,12 +63,18 @@ module.exports.getRideById = async (req, res) => {
 
     if (isNaN(req.params.id)) {
         return res.send({
-            error_code: 'ILLEGAL_PARAMETER',
+            error_code: 'VALIDATION_ERROR',
             message: 'Ride ID must be numeric'
         });
     }
     try {
         const row = await rideRepository.getRideById(req.params.id);
+        if (row == null) {
+            return res.send({
+                error_code: 'RIDES_NOT_FOUND_ERROR',
+                message: 'Could not find any rides'
+            });
+        }
         return res.send(row);
     } catch (err) {
         return res.send({
@@ -83,12 +89,24 @@ module.exports.getRides = async (req, res) => {
         const page = req.query.page;
         const view = req.query.view;
         const count = await rideRepository.count();
+        if (count == 0) {
+            return res.send({
+                error_code: 'RIDES_NOT_FOUND_ERROR',
+                message: 'Could not find any rides'
+            });
+        }
         if (page == null && view == null) {
             var rows = await rideRepository.getAllRides();
         } else {
             const limit = view;
             const offset = (page - 1) * view;
             var rows = await rideRepository.getRides(limit, offset);
+        }
+        if (rows.length === 0) {
+            return res.send({
+                error_code: 'RIDES_NOT_FOUND_ERROR',
+                message: 'Could not find any rides due to incorrect pagination'
+            });
         }
         const result = {};
         result.data = rows;
