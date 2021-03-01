@@ -1,8 +1,6 @@
 const rideRepository = require('../repository/rideRepository');
 
-// INSERT
 module.exports.insert = async (req, res) => {
-    //RECEIVING PARAM
     const startLatitude = Number(req.body.start_lat);
     const startLongitude = Number(req.body.start_long);
     const endLatitude = Number(req.body.end_lat);
@@ -11,7 +9,6 @@ module.exports.insert = async (req, res) => {
     const driverName = req.body.driver_name;
     const driverVehicle = req.body.driver_vehicle;
 
-    //VALIDATING PARAM
     if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
         return res.send({
             error_code: 'VALIDATION_ERROR',
@@ -62,7 +59,6 @@ module.exports.insert = async (req, res) => {
     }
 }
 
-// GET BY ID
 module.exports.getRideById = async (req, res) => {
 
     if (isNaN(req.params.id)) {
@@ -94,7 +90,10 @@ module.exports.getRides = async (req, res) => {
             const offset = (page - 1) * view;
             var rows = await rideRepository.getRides(limit, offset);
         }
-        return res.send(rows);
+        const result = {};
+        result.data = rows;
+        result.info = getPaginationInfo(count, page, view);
+        return res.send(result);
     } catch (err) {
         console.log(err);
         res.send({
@@ -102,6 +101,29 @@ module.exports.getRides = async (req, res) => {
             message: 'Unknown error'
             });
     }
+}
+
+const getPaginationInfo = (count, page, view) => {
+    const info = {};
+    info.totalData = count.toString();
+    info.totalPage = Math.ceil(count/view).toString();
+    info.currentPage = page.toString();
+
+    const startData = ((page-1)*view)+1;
+
+    let endData = 0;
+    if(Math.ceil(count/view) == page) {
+        endData = count;
+    } else {
+        endData = startData + (view-1);
+    }
+    
+    if (startData == endData) {
+        info.currentView = startData.toString();
+    } else {
+        info.currentView =  startData + ' - ' + endData;
+    }
+    return info;
 }
 
 
