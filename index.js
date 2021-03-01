@@ -6,7 +6,7 @@ const app = express();
 const port = 8010;
 
 app.use(auth({
-    users: { 'admin': 'supersecret' }
+    users: { 'xendit': 'supersecretpassword' }
 }))
 
 const db = require('./database');
@@ -23,3 +23,5 @@ db.serialize(() => {
 app.listen(port, () => console.log(`App started and listening on port ${port}`));
 
 app.get('/health', (req, res) => res.send('Healthy'));
+
+module.exports = app;
