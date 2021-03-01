@@ -12,10 +12,11 @@ These APIs are services for client to add a new ride information, get all rides 
     "start_long":"120",
     "end_lat":"-45",
     "end_long":"-119",
-    "rider_name":"Ando",
-    "driver_name":"Yaya",
-    "driver_vehicle":"Beat"
+    "rider_name":"Gandalf",
+    "driver_name":"Saruman",
+    "driver_vehicle":"Honda Beat"
     }
+    
 Request definition:
 |No.|Field|Mandatory|Remarks|Constraint|
 |---|-----|---------|-------|----------|
@@ -86,9 +87,15 @@ Response definition:
 |8|driverVehicle|Y|Driver's vehicle information|
 |9|created|Y|Generated ride timestamp|
 
-## 3. Get all ride information
+## 3. Get rides information
 - Path: /rides
 - HTTP Method: GET
+- Query param request definition:
+
+|No.|Field|Mandatory|Remarks|Constraint|
+|---|-----|---------|-------|----------|
+|1|page|N|Pagination value|Must be numeric value. View query param must be filled|
+|2|view|N|Number of data shown per page|Must be numeric value. Page query param must be filled|
 - HTTP Response:
 ####
     [
